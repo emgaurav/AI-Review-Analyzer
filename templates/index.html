@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>E-commerce Review Analysis</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <script>
+        async function sendData() {
+            const userInput = document.getElementById("userInput").value;
+            const response = await fetch('/store', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ text: userInput }),
+            });
+            window.location.reload();
+        }
+    </script>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div id="branding">
+                <h1>Review Analysis Tool</h1>
+            </div>
+        </div>
+    </header><br>
+    <div class="container">
+        <div class="input-container">
+            <textarea id="userInput" rows="6" cols="50"></textarea>
+            <button class="button" onclick="sendData()">Submit Review</button>
+        </div>
+        
+        <h2>Review Analysis:</h2>
+        <div class="table-container"> <!-- Wrapper for table responsiveness -->
+            <table>
+                <tr>
+                    <th class="summary-header" style="width: 270px;">Summary</th>
+
+                    <th>Satisfied</th>
+                    <th>Category</th>
+                    <th>Suggestion</th>
+                    <th>Item Purchased</th>
+                    <th>Emotion</th>
+                    <th>Review Length</th>
+                    <th>Product Features</th>
+                    <th>Urgency</th>
+                    <th>Authenticity</th>
+                    <th>Security Alert</th>
+                </tr>
+                {% for review in reviews %}
+                <tr>
+                    <td><div class="truncate">{{ review.analysis.summary }}</div></td>
+                    <td>{{ review.analysis.satisfied }}</td>
+                    <td>{{ review.analysis.category }}</td>
+                    <td><div class="truncate">{{ review.analysis.suggestion }}</div></td>
+                    <td>{{ review.analysis.item_purchased }}</td>
+                    <td>{{ review.analysis.emotion }}</td>
+                    <td>{{ review.analysis.review_length }}</td>
+                    <td>{{ review.analysis.product_features }}</td>
+                    <td>{{ review.analysis.urgency }}</td>
+                    <td>{{ review.analysis.authenticity }}</td>
+                    <td>{{ review.analysis.security_alert }}</td>
+                </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+</body>
+</html>
